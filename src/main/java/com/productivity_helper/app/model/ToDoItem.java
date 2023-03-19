@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -21,7 +22,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ToDoItem {
+public class ToDoItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
