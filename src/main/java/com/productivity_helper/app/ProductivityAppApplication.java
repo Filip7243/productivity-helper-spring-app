@@ -8,6 +8,7 @@ public class ProductivityAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProductivityAppApplication.class, args);
+		System.out.println("DUPA");
 	}
 
 }
