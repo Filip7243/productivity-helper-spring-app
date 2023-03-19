@@ -1,2 +1,4 @@
-package com.productivity_helper.app.repo;public interface ToDoItemRepository {
+package com.productivity_helper.app.repo;
+
+public interface ToDoItemRepository {
 }
