@@ -1,9 +1,6 @@
 package com.productivity_helper.app.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +12,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -34,5 +32,7 @@ public class ToDoItem implements Serializable {
     private Date dueDate;
     @NotNull
     private Boolean isDone;
+    @ManyToOne(fetch = LAZY)
+    private UserAccount user;
 
 }
