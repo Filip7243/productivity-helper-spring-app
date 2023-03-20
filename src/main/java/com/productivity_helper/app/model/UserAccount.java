@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,12 +36,12 @@ public class UserAccount implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING)
     @ManyToMany()
     @JoinTable(name = "role",
-    joinColumns = {
-            @JoinColumn(name = "users")
-    },
-    inverseJoinColumns = {
-            @JoinColumn(name = "roles")
-    })
+            joinColumns = {
+                    @JoinColumn(name = "users")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "roles")
+            })
     private Set<Role> roles;
     private Boolean isExpired;
     private Boolean isLocked;
@@ -80,5 +82,29 @@ public class UserAccount implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(Character password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
