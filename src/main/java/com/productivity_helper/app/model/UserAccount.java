@@ -36,14 +36,13 @@ public class UserAccount implements UserDetails, Serializable {
     private Character password;
     @Email
     private String email;
-    @Enumerated(EnumType.STRING)
     @ManyToMany()
-    @JoinTable(name = "role",
+    @JoinTable(name = "users_roles",
             joinColumns = {
-                    @JoinColumn(name = "users")
+                    @JoinColumn(name = "user_id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "roles")
+                    @JoinColumn(name = "role_id")
             })
     private Set<Role> roles;
     private LocalDateTime createdAt;
