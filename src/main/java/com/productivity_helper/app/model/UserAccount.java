@@ -10,10 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -43,6 +46,7 @@ public class UserAccount implements UserDetails, Serializable {
                     @JoinColumn(name = "roles")
             })
     private Set<Role> roles;
+    private LocalDateTime createdAt;
     private Boolean isExpired;
     private Boolean isLocked;
     private Boolean isCredentialsExpired;
@@ -51,37 +55,44 @@ public class UserAccount implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password.toString();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return this.isExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return this.isLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return !this.isCredentialsExpired;
+    }
+
+    public void setCredentialsExpired() {
+        LocalDateTime dateOfAccountExpiration = getCreatedAt().plusMonths(24);
+        LocalDateTime now = LocalDateTime.now();
+
+        this.isCredentialsExpired = now.isAfter(dateOfAccountExpiration);
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return this.isEnabled;
     }
 
     public Long getId() {
@@ -107,4 +118,13 @@ public class UserAccount implements UserDetails, Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }
