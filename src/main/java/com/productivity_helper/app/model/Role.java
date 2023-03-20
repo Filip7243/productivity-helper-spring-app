@@ -12,6 +12,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -29,12 +31,12 @@ public class Role {
     private Long id;
     @NotNull
     private String name;
-    @ManyToMany()
+    @ManyToMany(mappedBy = "roles")
     private Set<UserAccount> users;
 
     public void addRoleToUser(UserAccount account) {
         this.users.add(account);
-        account.getAuthorities().add(new SimpleGrantedAuthority()); //TODO:repair
+        //TODO: add role to user
     }
 
     public void removeRoleFromUser(UserAccount account) {
