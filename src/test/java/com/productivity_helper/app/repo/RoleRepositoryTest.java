@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
@@ -22,7 +19,6 @@ public class RoleRepositoryTest {
 
     @Autowired
     private RoleRepository roleRepository;
-    private Set<Role> roles;
 
     @BeforeEach
     public void setUp() {
@@ -30,15 +26,18 @@ public class RoleRepositoryTest {
         Role user = new Role(null, "ROLE_USER", new HashSet<>());
         Role moderator = new Role(null, "ROLE_MODERATOR", new HashSet<>());
 
-        roles = new HashSet<>(){{
-            this.add(admin);
-            this.add(user);
-            this.add(moderator);
-        }};
-
         roleRepository.save(admin);
         roleRepository.save(user);
         roleRepository.save(moderator);
     }
 
+    @Test
+    public void itShouldFindRoleByName() {
+        Optional<Role> foundRole = roleRepository.findByName("ROLE_ADMIN");
+
+        assertThat(foundRole).isInstanceOf(Optional.class);
+        assertThat(foundRole).isPresent();
+        assertThat(foundRole).isNotNull();
+        assertThat(foundRole.get()).isInstanceOf(Role.class);
+    }
 }
