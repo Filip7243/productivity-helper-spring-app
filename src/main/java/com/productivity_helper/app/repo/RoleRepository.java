@@ -20,7 +20,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Modifying
     @Query("UPDATE Role r SET r.name = :name WHERE r.id = :id")
-    void updateRoleWithId(@Param("id") Long id, @Param("name") String name);
+    // method for ADMIN for using only in extremely cases!!!
+    Integer updateRoleWithId(@Param("id") Long id, @Param("name") String name);
 
     Boolean existsByName(String name);
 }
