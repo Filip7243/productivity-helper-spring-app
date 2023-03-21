@@ -28,6 +28,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @NotNull
+    @Column(unique = true)
     private String name;
     @ManyToMany(mappedBy = "roles")
     private Set<UserAccount> users;
