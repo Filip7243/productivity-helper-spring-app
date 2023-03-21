@@ -35,9 +35,37 @@ public class RoleRepositoryTest {
     public void itShouldFindRoleByName() {
         Optional<Role> foundRole = roleRepository.findByName("ROLE_ADMIN");
 
+        makeSureThatRoleWasFound(foundRole);
+    }
+
+    @Test
+    public void itShouldNotFindRoleByName() {
+        Optional<Role> foundRole = roleRepository.findByName("ROLE_NON_EXISTING");
+
+        makeSureThatRoleWasNotFound(foundRole);
+    }
+
+    @Test
+    public void whenSaved_thenFindsByName() {
+        Role newRole = new Role(null, "NEW_ROLE", new HashSet<>());
+
+        roleRepository.save(newRole);
+        Optional<Role> foundRole = roleRepository.findByName(newRole.getName());
+
+        makeSureThatRoleWasFound(foundRole);
+    }
+
+
+    private static void makeSureThatRoleWasFound(Optional<Role> foundRole) {
         assertThat(foundRole).isInstanceOf(Optional.class);
         assertThat(foundRole).isPresent();
         assertThat(foundRole).isNotNull();
         assertThat(foundRole.get()).isInstanceOf(Role.class);
+    }
+
+    private static void makeSureThatRoleWasNotFound(Optional<Role> foundRole) {
+        assertThat(foundRole).isInstanceOf(Optional.class);
+        assertThat(foundRole).isNotPresent();
+        assertThat(foundRole).isNotNull();
     }
 }
