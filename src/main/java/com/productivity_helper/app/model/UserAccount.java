@@ -33,7 +33,7 @@ public class UserAccount implements UserDetails, Serializable {
     private String username;
     @Max(72)
     @NotNull
-    private Character password;
+    private Character[] password;
     @Email
     private String email;
     @ManyToMany()
@@ -106,7 +106,7 @@ public class UserAccount implements UserDetails, Serializable {
         this.username = username;
     }
 
-    public void setPassword(Character password) {
+    public void setPassword(Character[] password) {
         this.password = password;
     }
 
