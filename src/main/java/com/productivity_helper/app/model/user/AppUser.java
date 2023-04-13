@@ -14,9 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.time.LocalDate.now;
 
 @Entity
 @AllArgsConstructor
@@ -46,13 +48,35 @@ public class AppUser implements UserDetails, Serializable {
                     name = "role_id", referencedColumnName = "id"
             )
     )
-    private Set<AppUserRole> roles;
+    private Set<AppUserRole> roles = new HashSet<>();
     private LocalDate createdAt;
     private LocalDate expiredAt;
     private Boolean isLocked;
     private Boolean areCredentialsExpired;
     private Boolean isEnabled;
 
+    public AppUser(String firstName, String lastName, String email, String password) {
+        this.id = null;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createdAt = now();
+        this.expiredAt = now().plusMonths(6); // TODO: expiredAt
+        this.isLocked = false;
+        this.areCredentialsExpired = false;
+        this.isEnabled = true;
+    }
+
+    public void addRoleToUser(AppUserRole role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRoleFromUser(AppUserRole role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
