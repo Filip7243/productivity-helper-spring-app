@@ -36,7 +36,16 @@ public class AppUser implements UserDetails, Serializable {
     @NotBlank
     private String email;
     private String password;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"
+            )
+    )
     private Set<AppUserRole> roles;
     private LocalDate createdAt;
     private LocalDate expiredAt;
@@ -48,7 +57,7 @@ public class AppUser implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
     }
 
