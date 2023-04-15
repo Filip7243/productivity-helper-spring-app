@@ -3,7 +3,6 @@ package com.productivity_helper.app.service.user;
 import com.productivity_helper.app.controller.user.RegisterRequest;
 import com.productivity_helper.app.model.user.AppUser;
 import com.productivity_helper.app.repo.user.AppUserRepository;
-import com.productivity_helper.app.repo.user.AppUserRoleRepository;
 import com.productivity_helper.app.security.CustomPasswordEncoder;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository userRepo;
-    private final AppUserRoleRepository roleRepo;
     private final CustomPasswordEncoder passwordEncoder;
 
     @Override
