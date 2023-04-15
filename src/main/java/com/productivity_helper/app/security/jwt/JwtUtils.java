@@ -101,6 +101,7 @@ public class JwtUtils {
             );
         }
 
+        log.info("Token has not been refreshed!");
         return null;
     }
 
@@ -120,6 +121,10 @@ public class JwtUtils {
     public boolean isTokenExpired(String token) {
         DecodedJWT decodedToken = decodeToken(token);
         return decodedToken.getExpiresAt().before(new Date());
+    }
+
+    public Set<String> getBlockedTokens() {
+        return Set.copyOf(blockedTokens);
     }
 
     @Value("${jwt.token.secret}")
