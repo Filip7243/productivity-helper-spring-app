@@ -15,7 +15,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-public class AppUserRoleTest {
+public class AppUserRoleTests {
 
     @Autowired
     private AppUserRoleRepository userRoleRepo;
@@ -46,6 +46,12 @@ public class AppUserRoleTest {
         assertThat(admin).isPresent();
         assertThat(admin.get()).isNotNull();
         assertThat(admin.get().getName()).isEqualTo("ADMIN");
+    }
 
+    @Test
+    public void shouldNotFindRoleByName() {
+        Optional<AppUserRole> admin = userRoleRepo.findByName("MOCK");
+
+        assertThat(admin).isNotPresent();
     }
 }
