@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDate.now;
 
@@ -38,7 +39,7 @@ public class AppUser implements UserDetails, Serializable {
     @NotBlank
     private String email;
     private String password;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
