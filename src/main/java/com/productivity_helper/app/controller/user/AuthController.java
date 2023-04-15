@@ -19,7 +19,7 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<JwtResponse> sigUp(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> sigUp(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.signUp(registerRequest));
     }
 }

@@ -31,9 +31,8 @@ public class AuthService {
         return getJwtResponse(username);
     }
 
-    public JwtResponse signUp(RegisterRequest registerRequest) {
-        String username = userService.createUser(registerRequest);
-        return getJwtResponse(username);
+    public String signUp(RegisterRequest registerRequest) {
+        return userService.createUser(registerRequest);
     }
 
     private JwtResponse getJwtResponse(String username) {
