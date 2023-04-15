@@ -8,16 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-public class AppUserRepositoryTest {
+public class AppUserRepositoryTests {
 
     @Autowired
     private AppUserRepository userRepo;
@@ -61,6 +62,16 @@ public class AppUserRepositoryTest {
     }
 
     @Test
+    public void shouldNotFindAnyone() {
+        userRepo.deleteAll();
+
+        List<AppUser> all = userRepo.findAll();
+
+        assertThat(all).isNotNull();
+        assertThat(all.size()).isEqualTo(0);
+    }
+
+    @Test
     public void shouldFindUserByEmail() {
         String mail = "john@mail.com";
 
@@ -68,5 +79,34 @@ public class AppUserRepositoryTest {
 
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get().getEmail()).isEqualTo(mail);
+    }
+
+    @Test
+    public void shouldNotFindUserByEmail() {
+        String mail = "unexisting@mail.com";
+
+        Optional<AppUser> foundUser = userRepo.findByEmail(mail);
+
+        assertThat(foundUser).isNotPresent();
+    }
+
+    @Test
+    public void shouldExistsByEmail() {
+        String mail = "john@mail.com";
+
+        Boolean exists = userRepo.existsByEmail(mail);
+
+        assertThat(exists).isTrue();
+        assertTrue(exists);
+    }
+
+    @Test
+    public void shouldNotExistsByEmail() {
+        String mail = "unexisting@mail.com";
+
+        Boolean exists = userRepo.existsByEmail(mail);
+
+        assertThat(exists).isFalse();
+        assertFalse(exists);
     }
 }
