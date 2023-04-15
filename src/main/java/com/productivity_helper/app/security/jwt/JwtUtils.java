@@ -30,6 +30,7 @@ public class JwtUtils {
     public String generateToken(UserDetails user) {
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
+        log.info("Creating access token");
         return JWT.create()
                 .withSubject(user.getUsername()) // passing email to token
                 .withClaim("authorities",
@@ -41,6 +42,7 @@ public class JwtUtils {
     public String generateRefreshToken(UserDetails user) {
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
+        log.info("Creating refresh token");
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withIssuer(secret)
@@ -72,6 +74,7 @@ public class JwtUtils {
             return token.substring(bearer.length());
         }
 
+        log.info("No token in header!");
         return null;
     }
 
@@ -107,6 +110,7 @@ public class JwtUtils {
 
     public void addTokenToBlackList(String token) {
         blockedTokens.add(token);
+        log.info("Token added to black list");
     }
 
     public boolean isTokenBlackListed(String token) {
