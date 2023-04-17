@@ -1,9 +1,7 @@
-package com.productivity_helper.app.model;
+package com.productivity_helper.app.model.todolist;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.productivity_helper.app.model.user.AppUser;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,6 +12,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -33,5 +32,7 @@ public class ToDoItem {
     private Date dueDate;
     @NotNull
     private Boolean isDone;
+    @ManyToOne(fetch = LAZY)
+    private AppUser user;
 
 }
