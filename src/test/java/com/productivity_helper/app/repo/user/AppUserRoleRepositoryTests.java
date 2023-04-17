@@ -15,7 +15,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-public class AppUserRoleTests {
+public class AppUserRoleRepositoryTests {
 
     @Autowired
     private AppUserRoleRepository userRoleRepo;
