@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,8 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getUsername()) // passing email to token
                 .withClaim("authorities",
-                        user.getAuthorities().stream().toList()) // all user's roles
+                        user.getAuthorities().stream()
+                                .map(GrantedAuthority::getAuthority).toList()) // all user's roles
                 .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 1000)) // expiration time 24h from now
                 .sign(algorithm);
     }
@@ -90,9 +92,10 @@ public class JwtUtils {
 
         addTokenToBlackList(token);
 
-        if (token != null && !isTokenExpired(token) && !isTokenBlackListed(token)) {
+        if (token != null && isTokenBlackListed(token)) {
             String newToken = generateToken(user);
 
+            log.info("Creating refresh token");
             return new JwtResponse(
                     username,
                     newToken,
@@ -127,8 +130,12 @@ public class JwtUtils {
         return Set.copyOf(blockedTokens);
     }
 
+    public String getSecret() {
+        return this.secret;
+    }
+
     @Value("${jwt.token.secret}")
-    private void setSecret(String secret) {
+    public void setSecret(String secret) {
         this.secret = secret;
     }
 }
