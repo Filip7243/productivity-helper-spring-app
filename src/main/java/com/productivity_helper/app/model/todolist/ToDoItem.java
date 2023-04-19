@@ -35,4 +35,9 @@ public class ToDoItem {
     @ManyToOne(fetch = LAZY)
     private AppUser user;
 
+    public ToDoItem(String text, Date dueDate, AppUser user) {
+        this.text = text;
+        this.dueDate = dueDate;
+        this.user = user;
+    }
 }
