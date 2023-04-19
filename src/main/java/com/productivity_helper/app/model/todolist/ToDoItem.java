@@ -36,8 +36,10 @@ public class ToDoItem {
     private AppUser user;
 
     public ToDoItem(String text, Date dueDate, AppUser user) {
+        this.id = null;
         this.text = text;
         this.dueDate = dueDate;
+        this.isDone = false;
         this.user = user;
     }
 }
