@@ -25,7 +25,7 @@ public class ToDoItemService {
         return newTask.getId();
     }
 
-    public void updateTask(ToDoItemDto updatedTask, Long taskId) {
+    public ToDoItemDto updateTask(ToDoItemDto updatedTask, Long taskId) {
         ToDoItem task = itemRepo.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found!"));
 
@@ -33,14 +33,18 @@ public class ToDoItemService {
         task.setDueDate(updatedTask.dueDate());
 
         itemRepo.save(task);
+
+        return new ToDoItemDto(task.getText(), task.getDueDate());
     }
 
-    public void markTaskAsDone(Long taskId) {
+    public boolean markTaskAsDone(Long taskId) {
         ToDoItem task = itemRepo.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found!"));
         task.setIsDone(true);
 
         itemRepo.save(task);
+
+        return task.getIsDone();
     }
 
     public Long deleteTask(Long taskId) {
